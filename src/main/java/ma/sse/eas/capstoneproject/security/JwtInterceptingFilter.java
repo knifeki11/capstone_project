@@ -1,28 +1,26 @@
 package ma.sse.eas.capstoneproject.security;
 
-import java.io.IOException;
-
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
+import org.springframework.web.filter.GenericFilterBean;
 
-public class JwtInterceptingFilter extends FilterSecurityInterceptor {
+public class JwtInterceptingFilter extends GenericFilterBean {
 
-    public JwtInterceptingFilter() { }
+    public JwtInterceptingFilter() {}
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain)
-            throws IOException, ServletException {
-        Authentication authentication = JwtHelper.parse((HttpServletRequest)request);
-        if (authentication != null) {
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-        }
-        filterChain.doFilter(request, response);
+    public void doFilter(jakarta.servlet.ServletRequest servletRequest, jakarta.servlet.ServletResponse servletResponse, jakarta.servlet.FilterChain filterChain)
+            throws IOException, jakarta.servlet.ServletException {
+            HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
+            Authentication authentication = JwtHelper.parse(httpRequest);
+
+            if (authentication != null) {
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            }
+
+            filterChain.doFilter(servletRequest, servletResponse);
     }
 }
