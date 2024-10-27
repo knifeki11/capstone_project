@@ -3,11 +3,14 @@ package ma.sse.eas.capstoneproject.persistence.entities;
 import com.sun.istack.NotNull;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+
 import java.util.HashSet;
 import java.util.Set;
 
 
 @Data
+@EqualsAndHashCode(callSuper = false)
 @Entity
 @Table(name = "\"tenant\"")
 public class Tenant extends BaseEntity {

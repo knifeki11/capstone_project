@@ -4,11 +4,14 @@ package ma.sse.eas.capstoneproject.persistence.entities;
 import jakarta.persistence.*;
 import lombok.Data;
 import com.sun.istack.NotNull;
+import lombok.EqualsAndHashCode;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 
 @Data
+@EqualsAndHashCode(callSuper = false)
 @Entity
 @Table(name = "process")
 public class Process  extends BaseEntity implements Serializable{

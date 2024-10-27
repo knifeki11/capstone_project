@@ -3,10 +3,12 @@ package ma.sse.eas.capstoneproject.persistence.entities;
 import com.sun.istack.NotNull;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
 @Data
+@EqualsAndHashCode(callSuper = false)
 @Entity
 public class Suggestion extends BaseEntity {
 

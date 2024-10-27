@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: pgvector/pgvector:pg17
+    container_name: spring_postgres_db
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: knifeki12
+      POSTGRES_DB: gest_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - spring_network
+
+#  ollama:
+#    image: ollama/ollama:latest
+#    container_name: ollama_service
+#    ports:
+#      - "8080:8080"
+#    networks:
+#      - spring_network
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "6000:80"
+    depends_on:
+      - pgvector
+    networks:
+      - spring_network
+
+networks:
+  spring_network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+    driver: local

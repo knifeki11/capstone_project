@@ -3,10 +3,11 @@ package ma.sse.eas.capstoneproject.persistence.entities;
 import com.sun.istack.NotNull;
 import jakarta.persistence.*;
 import lombok.Data;
-
+import lombok.EqualsAndHashCode;
 
 
 @Data
+@EqualsAndHashCode(callSuper = false)
 @Entity
 public class Review extends BaseEntity {
 

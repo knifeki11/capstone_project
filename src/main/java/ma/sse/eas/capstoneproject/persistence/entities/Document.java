@@ -3,12 +3,14 @@ package ma.sse.eas.capstoneproject.persistence.entities;
 import com.sun.istack.NotNull;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Data
+@EqualsAndHashCode(callSuper = false)
 @Entity
 @Table(name = "document")
 public class Document extends BaseEntity implements Serializable {

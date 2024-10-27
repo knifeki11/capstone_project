@@ -22,16 +22,18 @@ import javax.sql.DataSource;
 @EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfigurer {
 
-    @Autowired
-    private DataSource dataSource;
+    private final DataSource dataSource;
+
+    public SecurityConfigurer(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
     @Bean
     public JwtInterceptingFilter jwtInterceptingFilter() {
         return new JwtInterceptingFilter();
     }
 
-    @Autowired
-    private JwtInterceptingFilter jwtInterceptingFilter;
+
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -48,7 +50,7 @@ public class SecurityConfigurer {
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
-        http.addFilterBefore(jwtInterceptingFilter, UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(jwtInterceptingFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

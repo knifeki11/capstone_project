@@ -1,8 +1,8 @@
-INSERT INTO "user" (id, username, firstname, lastname, password, email, phone, tenant_id, active, created_date, last_modified_date) VALUES
-(1, 'user1', 'John', 'Doe', 'passwordHash1', 'john.doe@example.com', '1234567890', 1, true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(2, 'user2', 'Jane', 'Smith', 'passwordHash2', 'jane.smith@example.com', '2345678901', 1, true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-3, 'user3', 'Robert', 'Brown', 'passwordHash3', 'robert.brown@example.com', '3456789012', 2, true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(4, 'user4', 'Emily', 'Davis', 'passwordHash4', 'emily.davis@example.com', '4567890123', 2, true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO "app_user" (id, username, firstname, lastname, password, email, phone, tenant_id, active, created_date, last_modified_date)
+VALUES (1, 'user1', 'John', 'Doe', 'passwordHash1', 'john.doe@example.com', '1234567890', 1, true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+       (2, 'user2', 'Jane', 'Smith', 'passwordHash2', 'jane.smith@example.com', '2345678901', 1, true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+       (3, 'user3', 'Robert', 'Brown', 'passwordHash3', 'robert.brown@example.com', '3456789012', 2, true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+       (4, 'user4', 'Emily', 'Davis', 'passwordHash4', 'emily.davis@example.com', '4567890123', 2, true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 INSERT INTO tenant (id, name, description, admin, active, created_date, last_modified_date) VALUES
                                                                                                 (1, 'TechCorp', 'Tech Company focusing on AI solutions', true, true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
