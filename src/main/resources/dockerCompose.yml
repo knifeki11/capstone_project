@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  postgres:
+  spring_postgres_db:
     image: pgvector/pgvector:pg17
     container_name: spring_postgres_db
     environment:
@@ -12,8 +12,7 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    networks:
-      - spring_network
+
 
 #  ollama:
 #    image: ollama/ollama:latest
@@ -32,13 +31,8 @@ services:
     ports:
       - "6000:80"
     depends_on:
-      - pgvector
-    networks:
-      - spring_network
+      - spring_postgres_db
 
-networks:
-  spring_network:
-    driver: bridge
 
 volumes:
   postgres_data:

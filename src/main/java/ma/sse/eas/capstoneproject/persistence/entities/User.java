@@ -55,3 +55,4 @@ public class User extends BaseEntity {
 
     protected User() {}
 }
+

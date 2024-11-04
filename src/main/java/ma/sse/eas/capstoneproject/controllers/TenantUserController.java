@@ -1,21 +1,26 @@
 package ma.sse.eas.capstoneproject.controllers;
 
 import ma.sse.eas.capstoneproject.persistence.dtos.UserDto;
+import ma.sse.eas.capstoneproject.persistence.entities.AuthenticationResponse;
 import ma.sse.eas.capstoneproject.persistence.entities.User;
 import ma.sse.eas.capstoneproject.persistence.entities.Tenant;
 import ma.sse.eas.capstoneproject.security.JwtHelper;
 import ma.sse.eas.capstoneproject.services.TenantService;
 import ma.sse.eas.capstoneproject.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/tenants")
+@RequestMapping("/rest/users")
 public class TenantUserController {
 
     @Autowired
@@ -49,15 +54,29 @@ public class TenantUserController {
     }
 
     // User Endpoints
-    @PostMapping("/authenticate")
-    public String authenticate(@RequestBody UserDto userDto) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(userDto.getUsername(), userDto.getPassword()));
-        return JwtHelper.generateToken(authentication);
+    @PostMapping(value = "/authenticate", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> authenticate(@RequestBody UserDto userDto) {
+        try {
+            System.out.println(userDto.getUsername());
+            System.out.println(userDto.getPassword());
+
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(userDto.getUsername(), userDto.getPassword()));
+
+            // Generate JWT Token
+            String token = JwtHelper.generateToken(authentication);
+
+            // Return the token wrapped in a response object
+            AuthenticationResponse response = new AuthenticationResponse(token);
+            return ResponseEntity.ok(response);
+        } catch (AuthenticationException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Authentication failed: " + e.getMessage());
+        }
     }
 
+
     @PostMapping("/{tenantId}/users/create")
-    public boolean createUser(@RequestBody UserDto dto, Long tenantId) {
+    public boolean createUser(@RequestBody UserDto dto,@PathVariable Long tenantId) {
         if (!check(dto))
             return false;
 

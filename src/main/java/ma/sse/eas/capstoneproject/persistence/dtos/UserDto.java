@@ -29,6 +29,5 @@ public class UserDto  implements Serializable {
         this.email = email;
         this.phone = phone;
         this.password = password;
-        this.newPassword = newPassword;
     }
 }
