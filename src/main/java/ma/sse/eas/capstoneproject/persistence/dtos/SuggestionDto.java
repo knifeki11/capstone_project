@@ -1,7 +1,7 @@
 package ma.sse.eas.capstoneproject.persistence.dtos;
 
 import lombok.Data;
-
+import ma.sse.eas.capstoneproject.persistence.entities.Suggestion;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
@@ -28,4 +28,15 @@ public class SuggestionDto implements Serializable {
         this.processId = processId;
         this.status = status;
     }
+
+    public SuggestionDto(Suggestion suggestion) {
+        this.id = suggestion.getId();
+        this.title = suggestion.getTitle();
+        this.content = suggestion.getContent();
+        this.userId = suggestion.getUser() != null ? suggestion.getUser().getId() : null;
+        this.processId = suggestion.getProcess() != null ? suggestion.getProcess().getId() : null;
+        this.status = suggestion.getStatus() != null ? suggestion.getStatus().name() : null; // Convert enum to String
+    }
+
+
 }

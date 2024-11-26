@@ -1,5 +1,5 @@
 package ma.sse.eas.capstoneproject.persistence.dtos;
-
+import ma.sse.eas.capstoneproject.persistence.entities.Review;
 import lombok.Data;
 
 import java.io.Serial;
@@ -24,6 +24,15 @@ public class ReviewDto implements Serializable {
         this.comment = comment;
         this.rating = rating;
         this.isApproved = isApproved;
+    }
+
+    public ReviewDto(Review review) {
+        this.id = review.getId();
+        this.suggestionId = review.getSuggestion().getId();
+        this.reviewerId = review.getReviewer().getId();
+        this.comment = review.getComment();
+        this.rating = review.getRating();
+        this.isApproved = review.getIsApproved();
     }
 
 }

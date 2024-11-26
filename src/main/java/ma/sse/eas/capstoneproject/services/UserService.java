@@ -65,6 +65,7 @@ public class UserService {
         create(username, password, firstName, lastName, email, phone, tenant, authorities);
     }
 
+
     private void create(String username, String password, String firstName, String lastName, String email, String phone,
                         Tenant tenant, String[] authorities) {
         User user = new User(username, firstName, lastName, new BCryptPasswordEncoder().encode(password), email, phone);

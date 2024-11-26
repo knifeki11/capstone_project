@@ -48,6 +48,7 @@ public class TenantUserController {
         return tenantService.updateTenant(tenantId, tenant.getName(), tenant.getDescription());
     }
 
+
     @DeleteMapping("/delete/{tenantId}")
     public void deleteTenant(@PathVariable Long tenantId) {
         tenantService.deleteTenant(tenantId);

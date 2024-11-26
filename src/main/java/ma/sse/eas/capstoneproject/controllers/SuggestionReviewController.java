@@ -1,66 +1,86 @@
 package ma.sse.eas.capstoneproject.controllers;
 
-
+import ma.sse.eas.capstoneproject.persistence.dtos.ReviewDto;
 import ma.sse.eas.capstoneproject.persistence.dtos.SuggestionDto;
-import ma.sse.eas.capstoneproject.persistence.entities.Suggestion;
-import ma.sse.eas.capstoneproject.persistence.entities.SuggestionStatus;
+import ma.sse.eas.capstoneproject.services.ReviewService;
 import ma.sse.eas.capstoneproject.services.SuggestionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
 @RestController
 @RequestMapping("/rest/suggestions")
 public class SuggestionReviewController {
-    @Autowired
-    private SuggestionService suggestionService;
 
+    private final SuggestionService suggestionService;
+    private final ReviewService reviewService;
+
+    @Autowired
+    public SuggestionReviewController(SuggestionService suggestionService, ReviewService reviewService) {
+        this.suggestionService = suggestionService;
+        this.reviewService = reviewService;
+    }
+
+    // Suggestions Endpoints
     @PostMapping
-    public ResponseEntity<Suggestion>
-    createSuggestion(@RequestBody SuggestionDto suggestionDto) {
-        Suggestion suggestion = suggestionService.createSuggestion(suggestionDto);
-        return new ResponseEntity<>(suggestion, HttpStatus.CREATED);
+    public ResponseEntity<SuggestionDto> createSuggestion(@RequestBody SuggestionDto suggestionDto) {
+        var suggestion = suggestionService.createSuggestion(suggestionDto);
+        return ResponseEntity.ok(new SuggestionDto(suggestion));
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<Suggestion>> getAllSuggestions() {
-        List<Suggestion> suggestions = suggestionService.getAllSuggestions();
-        return new ResponseEntity<>(suggestions, HttpStatus.OK);
+    public ResponseEntity<List<SuggestionDto>> getAllSuggestions() {
+        var suggestions = suggestionService.getAllSuggestions();
+        var suggestionDtos = suggestions.stream().map(SuggestionDto::new).toList();
+        return ResponseEntity.ok(suggestionDtos);
     }
 
-    @GetMapping("/{suggestionId}")
-    public ResponseEntity<Suggestion> getSuggestionById(@PathVariable Long suggestionId) {
-        Suggestion suggestion = suggestionService.getSuggestionById(suggestionId);
-        return new ResponseEntity<>(suggestion, HttpStatus.OK);
+    @GetMapping("/{id}")
+    public ResponseEntity<SuggestionDto> getSuggestionById(@PathVariable Long id) {
+        var suggestion = suggestionService.getSuggestionById(id);
+        return ResponseEntity.ok(new SuggestionDto(suggestion));
     }
 
-    @PutMapping("/{suggestionId}")
-    public ResponseEntity<Suggestion> updateSuggestion(@PathVariable Long suggestionId, @RequestBody SuggestionDto suggestionDto) {
-        Suggestion updatedSuggestion = suggestionService.updateSuggestion(suggestionId, suggestionDto);
-        return new ResponseEntity<>(updatedSuggestion, HttpStatus.OK);
+    @PutMapping("/{id}")
+    public ResponseEntity<SuggestionDto> updateSuggestion(
+            @PathVariable Long id, @RequestBody SuggestionDto suggestionDto) {
+        var updatedSuggestion = suggestionService.updateSuggestion(id, suggestionDto);
+        return ResponseEntity.ok(new SuggestionDto(updatedSuggestion));
     }
 
-    @DeleteMapping("/{suggestionId}")
-    public ResponseEntity<Void> deleteSuggestion(@PathVariable Long suggestionId) {
-        suggestionService.deleteSuggestion(suggestionId);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteSuggestion(@PathVariable Long id) {
+        suggestionService.deleteSuggestion(id);
+        return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Suggestion>> getSuggestionsByUser(@PathVariable Long userId) {
-        List<Suggestion> suggestions = suggestionService.getSuggestionsByUser(userId);
-        return new ResponseEntity<>(suggestions, HttpStatus.OK);
+    // Reviews Endpoints
+    @PostMapping("/{suggestionId}/reviews")
+    public ResponseEntity<ReviewDto> addReviewToSuggestion(
+            @PathVariable Long suggestionId, @RequestBody ReviewDto reviewDto) {
+        var review = reviewService.createReview(suggestionId, reviewDto);
+        return ResponseEntity.ok(new ReviewDto(review));
     }
 
-    @GetMapping("/status/{status}")
-    public ResponseEntity<List<Suggestion>> getSuggestionsByStatus(@PathVariable SuggestionStatus status) {
-        List<Suggestion> suggestions = suggestionService.getSuggestionsByStatus(status);
-        return new ResponseEntity<>(suggestions, HttpStatus.OK);
+    @GetMapping("/{suggestionId}/reviews")
+    public ResponseEntity<List<ReviewDto>> getReviewsForSuggestion(@PathVariable Long suggestionId) {
+        var reviews = reviewService.getReviewsForSuggestion(suggestionId);
+        var reviewDtos = reviews.stream().map(ReviewDto::new).toList();
+        return ResponseEntity.ok(reviewDtos);
     }
 
+    @PutMapping("/reviews/{reviewId}")
+    public ResponseEntity<ReviewDto> updateReview(
+            @PathVariable Long reviewId, @RequestBody ReviewDto reviewDto) {
+        var updatedReview = reviewService.updateReview(reviewId, reviewDto);
+        return ResponseEntity.ok(new ReviewDto(updatedReview));
+    }
+
+    @DeleteMapping("/reviews/{reviewId}")
+    public ResponseEntity<Void> deleteReview(@PathVariable Long reviewId) {
+        reviewService.deleteReview(reviewId);
+        return ResponseEntity.noContent().build();
+    }
 }
