@@ -1,6 +1,6 @@
 package ma.sse.eas.capstoneproject.persistence.entities;
 
-import com.sun.istack.NotNull;
+import jakarta.validation.constraints.NotNull;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

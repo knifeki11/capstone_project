@@ -3,7 +3,7 @@ package ma.sse.eas.capstoneproject.persistence.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import com.sun.istack.NotNull;
+import jakarta.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 
 import java.io.Serial;
